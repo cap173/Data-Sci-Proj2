@@ -34,7 +34,7 @@ def clean_data(filename):
     
     # remove 7 PM time from column
     data['ISSUE_DATE'] = data['ISSUE_DATE'].str[:10]
-    df_filename = filename[-3:] + "_CLEAN.csv"
+    df_filename = filename[:-3] + "_CLEAN.csv"
     df_to_file(data, df_filename)
     return data
     
