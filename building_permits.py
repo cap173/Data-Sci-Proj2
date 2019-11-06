@@ -11,53 +11,39 @@ url_permits_2018 = 'https://opendata.arcgis.com/datasets/42cbd10c2d6848858374fac
 permits2018 = 'permits_2018.csv'
 clean_permits2018 = open( 'permits_2011_CLEAN.csv', 'w')
 
-def collectData():
-   # Request 2010 data from API and save it into a csv file
-   request = requests.get( url_permits_2010 )
-   outFile = open( permits2010, 'wt' )
+def collectData(url, filename):
+   request = requests.get( url )
+   outFile = open( filename, 'wt' )
    outFile.write( request.text.encode('utf-8'))
    
-   # Request 2018 data from API and save it into a csv file
-   request = requests.get( url_permits_2018 )
-   outFile = open( permits2018, 'wt' )
-   outFile.write( request.text.encode('utf-8'))
-   
-   print( outFile )
-   
-   
-def openFile( filename ):
+def file_to_df( filename ):
     myData = pd.read_csv( filename , sep=',', encoding='latin1')
     return myData
 
-def removeMissing( data ):
+def df_to_file(df):
+    file_from_df = df.to_csv(index=False)
+    return file_from_df
+
+
+def clean_data(filename):
+    # Opens the csv with data so it can be cleaned 
+    data = file_to_df( filename )
     # Remove rows with missing data and print them onto screen 
     # Display how many rows were dropped
-    rowCount = data.shape[0]
-    badRows = data[data.isna().any(axis=1)]
-    data = data.dropna()
-    rowCount = rowCount - data.shape[0]
+    data = data.drop(['PERMIT_CATEGORY_NAME','CITY', 'STATE', 'ZIPCODE', 'DCSTATADDRESSKEY', 'DCSTATLOCATIONKEY','HOTSPOT2006NAME', 'HOTSPOT2005NAME', 'HOTSPOT2004NAME', 'BUSINESSIMPROVEMENTDISTRICT' ], axis=1)
     
-    print( badRows )
-    print( 'Number of rows dropped:', rowCount, '\n' )
+    # remove 7 PM time from column
+    data['ISSUE_DATE'] = data['ISSUE_DATE'].str[:10]
     return data
-
-def cleanData(filename):
-    # Opens the csv with data so it can be cleaned 
-    data_file = openFile( filename )
-    
-    # Call function to remove missing values
-    print( 'Missing Data for 2011 Permit data: ')
-    data_file = removeMissing( data_file )
-    
     
 
 def main():
-   collectData()
-   cleanData(permits2010)
-   cleanData(permits2018)
-   
-df_2010 = openFile(permits2010)
-df_2018 = openFile(permits2018)
-        
+    permits2010 = 'permits_2010.csv'
+    collectData(url_permits_2010, permits2010)
+    permits2018 = 'permits_2018.csv'
+    collectData(url_permits_2018, permits2018)
+    df_permits2010 = clean_data(permits2010)
+    df_permits2018 = clean_data(permits2018)
+
 if __name__== "__main__" :
     main()
