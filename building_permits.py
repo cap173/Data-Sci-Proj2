@@ -20,8 +20,8 @@ def file_to_df( filename ):
     myData = pd.read_csv( filename , sep=',', encoding='latin1')
     return myData
 
-def df_to_file(df):
-    file_from_df = df.to_csv(index=False)
+def df_to_file(df, filename):
+    file_from_df = df.to_csv(filename, index=False, encoding='latin1')
     return file_from_df
 
 
@@ -34,6 +34,8 @@ def clean_data(filename):
     
     # remove 7 PM time from column
     data['ISSUE_DATE'] = data['ISSUE_DATE'].str[:10]
+    df_filename = filename[-3:] + "_CLEAN.csv"
+    df_to_file(data, df_filename)
     return data
     
 
