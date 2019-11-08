@@ -1,12 +1,5 @@
-import csv
-import pandas as pd
-import numpy as np, math
 import matplotlib.pyplot as plt
-import pylab as pl
 import pandas as pd
-
-permits2010_file = 'permits_2010_CLEAN.csv'
-permits2018_file = 'permits_2018_CLEAN.csv'
 
 census2010_file = 'census_2010_CLEAN.csv'
 
@@ -14,6 +7,7 @@ def openFile(filename):
     # Creation of pandas dataframe
     myData = pd.read_csv(filename, sep=',', encoding='latin1')
     return myData
+
 
 def histogram(df):
 
@@ -34,19 +28,36 @@ def histogram(df):
     plt.show()
 
 
+def scatter(df):
+
+    #Creation of scatterplots
+
+    df.plot.scatter(x='Vacant Housing Units', y='Pop of 1 race: Black')
+
+    plt.savefig('VHPB.png')
+
+
+
+    df.plot.scatter(x='FAGI_MEDIAN_2010', y='Vacant Housing Units')
+
+    plt.savefig('FTVH.png')
+
+
+    df.plot.scatter(x='Pop of 1 race: Black', y='FAGI_MEDIAN_2010')
+
+    plt.savefig('PBFT.png')
+
+
+    plt.show()
+
+
 def main():
 
-    permits_2010 = openFile(permits2010_file)
-    print('For Permits 2010 Data:\n')
-    print(permits_2010)
-
     census_2010 = openFile(census2010_file)
+
     histogram(census_2010)
 
-    permits2018 = openFile(permits2018_file)
-    print('For Permits 2018 Data:\n')
-    print(permits2018)
-    histogram(permits2018)
+    scatter(census_2010)
 
 
 if __name__ == "__main__":
