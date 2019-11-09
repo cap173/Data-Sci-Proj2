@@ -51,7 +51,7 @@ def ward( df, framename ):
     
     ward = AgglomerativeClustering(affinity='euclidean', compute_full_tree='auto',
                         connectivity=None, distance_threshold=None,
-                        linkage='ward', memory=None, n_clusters=2,
+                        linkage='ward', memory=None, n_clusters=5,
                         pooling_func='deprecated').fit( normalizedDataFrame )
     cluster_labels = ward.labels_
     silhouette_avg = silhouette_score( normalizedDataFrame, cluster_labels)
@@ -137,7 +137,6 @@ def main():
     ward( census2010, 'census2010' )
     km( census2010, 'census2010' )
     db( census2010, 'census2010' )
-
     
 
 if __name__== "__main__" :
