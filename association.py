@@ -25,14 +25,16 @@ def preprocess(df):
 
 def rules(data):
 
-    supp = [0.3, 0.4, 0.2]
+    #calculate association rules
+
+    supp = [0.05, 0.01, 0.03]
 
     confid = [0.2, 0.3, 0.1]
 
 
     for i in range(len(supp)):
 
-        aR = apriori(data, min_support= supp[i], min_confidence= confid[i], min_length=2)
+        aR = apriori(data, min_support= supp[i], min_confidence= confid[i])
 
         results = list(aR)
 
@@ -43,9 +45,8 @@ def main():
 
     census2010 = openFile(census2010_file)
 
+    #Select relevant
     data = preprocess(census2010)
-
-    print(data)
 
     rules(data)
 
