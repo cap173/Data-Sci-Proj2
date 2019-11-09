@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-Created on Thu Nov  7 21:20:00 2019
+Created on Wed Nov 6 21:20:00 2019
 
 @author: aleidaolvera
 """
