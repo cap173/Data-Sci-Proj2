@@ -25,11 +25,18 @@ def preprocess(df):
 
 def rules(data):
 
-    aR = apriori(data, min_support= 0.3, min_confidence=0.2, min_length=2)
+    supp = [0.3, 0.4, 0.2]
 
-    results = list(aR)
+    confid = [0.2, 0.3, 0.1]
 
-    print(results)
+
+    for i in range(len(supp)):
+
+        aR = apriori(data, min_support= supp[i], min_confidence= confid[i], min_length=2)
+
+        results = list(aR)
+
+        print(results)
 
 
 def main():
