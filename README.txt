@@ -36,6 +36,8 @@ permits_2010.csv: Clean permit data from 2010
 
 permits_2018.csv: Clean permit data from 2018
 
+association.py: Python code that performs Apriori algorithm against our data set
+
 Histograms and Correlation Images folder: Folder of histogram images produced
 
 
