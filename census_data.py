@@ -84,6 +84,7 @@ def rename_census_columns(df):
 def bin_census_data(df, cat_name, year):
     income_cat = 'INCOME_LEVEL_' + str(year)
     df[income_cat] = df[cat_name].apply(lambda x: 'LOW_INCOME' if x <= 30000 else ('MID_INCOME' if x <= 65000 else ('MID_HIGH_INCOME' if x < 100000 else 'HIGH_INCOME')))
+    
 
 def tract_to_cluster(df, cat_name):
     clusters = {
@@ -150,11 +151,15 @@ def extra_clean_up(df, year):
         
 
 def change_income(df2000, df2010):
-    df2010['INCOME_CH_2005_2010'] = (df2010['FAGI_MEDIAN_2010'] - df2000['FAGI_MEDIAN_2005']) / df2000['FAGI_MEDIAN_2005']
-    df2010['INCOME_CH_2010_2015'] = (df2010['FAGI_MEDIAN_2015'] - df2010['FAGI_MEDIAN_2010']) / df2010['FAGI_MEDIAN_2010']
+    df2010['INCOME_CH_2005_2010'] = (df2010['FAGI_MEDIAN_2010'] - df2000['FAGI_MEDIAN_2005']) / df2000['FAGI_MEDIAN_2005']*100
+    df2010['INCOME_CH_2010_2015'] = (df2010['FAGI_MEDIAN_2015'] - df2010['FAGI_MEDIAN_2010']) / df2010['FAGI_MEDIAN_2010']*100
     df2010['INCOME_CH_2005_2010'] = df2010['INCOME_CH_2005_2010'].round(2)
     df2010['INCOME_CH_2010_2015'] = df2010['INCOME_CH_2010_2015'].round(2)
     
+def bin_income_change(df):
+    df['BIN_INCOME_CH_2005_2010'] = df['INCOME_CH_2005_2010'].apply(lambda x: 'DECREASE' if x < 0 else ('NO_CHANGE' if 7 < x == 0 else ('SM_INCREASE' if 15 <= x <= 7 else 'LG_INCREASE')))
+    df['BIN_INCOME_CH_2010_2015'] = df['INCOME_CH_2010_2015'].apply(lambda x: 'DECREASE' if x < 0 else ('NO_CHANGE' if 7 < x == 0 else ('SM_INCREASE' if 15 <= x <= 7 else 'LG_INCREASE')))
+
 
 def cleanData():
     # Opens the csv with data so it can be cleaned 
@@ -173,6 +178,7 @@ def cleanData():
     # round all values to 2 decimal places
     data2000 = data2000.round(2)
     data2010 = data2010.round(2)
+    bin_income_change(data2010)
     # Write cleaned data to a new file
     data2000.to_csv( clean2000 )
     data2010.to_csv( clean2010 )

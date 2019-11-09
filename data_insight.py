@@ -25,7 +25,7 @@ def basic_statistical_analysis(df, cat_name):
     # media
     print('Median: ' + str(round(df[cat_name].median(), 2)))
     # standard dev
-    print('Standrad Dev: ' + str(round(df[cat_name].std(), 2)))
+    print('Standard Dev: ' + str(round(df[cat_name].std(), 2)))
     
 def cat_statistical_analysis(df, cat_name):
     print('Categorical Analysis of ' + str(cat_name))
