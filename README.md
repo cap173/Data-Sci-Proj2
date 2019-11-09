@@ -1,6 +1,9 @@
 # Project 2 ReadMe
 > NetID of Contributors: cap173, ao598, ln358
 
+## Zip File Location
+The `.zip` file is labeled [PROJ2_SUB.zip](https://github.com/cap173/Data-Sci-Proj2/blob/master/PROJ2_SUB.zip). It may be difficult to find it in the repo, therefore the link is attached here.
+
 - building permits.py: Python codes that retrieves data on Construction permits from the years 2010 and 2018
 - census_data.py: Python code that retrieves and cleans Census Data from the years 2000 and 2010.
 - census_2000.csv: Unclean 2000 Census data
