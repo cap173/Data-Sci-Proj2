@@ -14,12 +14,12 @@ def collectData():
    # Request 2000 data from API and save it into a csv file
    request = requests.get( urlFor2000 )
    outFile = open( csv2000, 'wt' )
-   outFile.write( request.text.encode('utf-8') )
+   outFile.write( request.text )
    
    # Request 2010 data from API and save it into a csv file
    request = requests.get( urlFor2010 )
    outFile = open( csv2010, 'wt' )
-   outFile.write( request.text.encode('utf-8'))
+   outFile.write( request.text )
    print( outFile )
    
 def openFile( filename ):
@@ -138,7 +138,7 @@ def extra_clean_up(df, year):
         df['FEDTRACTNO'].round(2)
         tract_to_cluster(df, 'FEDTRACTNO')
         bin_census_data(df, 'FAGI_MEDIAN_2005', '2005')
-    if year == '2010':
+    elif year == '2010':
         df['TRACT'] = df['TRACT'] * float(0.01)
         df['TRACT'] = df['TRACT'].round(2)
         tract_to_cluster(df, 'TRACT')
@@ -147,7 +147,13 @@ def extra_clean_up(df, year):
         df['POPDENSITY'] = df['Total Population'] / df['SQ_MILES']
         bin_census_data(df, 'FAGI_MEDIAN_2010', '2010')
         bin_census_data(df, 'FAGI_MEDIAN_2015', '2015')
+        
 
+def change_income(df2000, df2010):
+    df2010['INCOME_CH_2005_2010'] = (df2010['FAGI_MEDIAN_2010'] - df2000['FAGI_MEDIAN_2005']) / df2000['FAGI_MEDIAN_2005']
+    df2010['INCOME_CH_2010_2015'] = (df2010['FAGI_MEDIAN_2015'] - df2010['FAGI_MEDIAN_2010']) / df2010['FAGI_MEDIAN_2010']
+    df2010['INCOME_CH_2005_2010'] = df2010['INCOME_CH_2005_2010'].round(2)
+    df2010['INCOME_CH_2010_2015'] = df2010['INCOME_CH_2010_2015'].round(2)
     
 
 def cleanData():
@@ -163,6 +169,10 @@ def cleanData():
     data2010 = rename_census_columns(data2010)
     extra_clean_up(data2000, '2000')
     extra_clean_up(data2010, '2010')
+    change_income(data2000,data2010)
+    # round all values to 2 decimal places
+    data2000 = data2000.round(2)
+    data2010 = data2010.round(2)
     # Write cleaned data to a new file
     data2000.to_csv( clean2000 )
     data2010.to_csv( clean2010 )
