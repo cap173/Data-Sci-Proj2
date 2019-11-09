@@ -45,7 +45,7 @@ def main():
     # sometimes pulling this data throws an error...
     # I guess it's sending too many requests at a time
     collectData(url_permits_2018, permits2018)
-    dclean_data(permits2018)
+    clean_data(permits2018)
 
 if __name__== "__main__" :
     main()
